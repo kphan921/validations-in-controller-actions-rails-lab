@@ -8,10 +8,15 @@ class PostsController < ApplicationController
   end
 
   def update
-    @post.update(post_params)
-
-    redirect_to post_path(@post)
+      if @post.update(post_params)
+        flash[:success] = "Post was successfully updated"
+        redirect_to @post
+      else
+        flash[:error] = "Something went wrong"
+        render 'edit'
+      end
   end
+  
 
   private
 
@@ -20,6 +25,6 @@ class PostsController < ApplicationController
   end
 
   def set_post!
-    @post = Post.find(params[:id])
+    @post = Post.find_by(id: params[:id])
   end
 end
